@@ -40,9 +40,6 @@ e:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		print(collected);
-		print(uncollected);
-		print(unusable);
 		MountJournal.MountCount.Label:SetText("Collected: |cffFFFFFF" .. collected .. "|r\n" ..
 		"Uncollected: |cffFFFFFF" .. uncollected .. "|r\n" ..
 		"Usable: |cffFFFFFF" .. (collected-unusable) .. "|r");
