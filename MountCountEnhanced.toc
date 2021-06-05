@@ -1,0 +1,8 @@
+## Author: Sappy (Alex)
+## Interface: 90005
+## Name: MountCountEnhanced
+## Notes: Enhances mount count information in the mount journal.
+## Title: MountCountEnhanced
+## Version: 0.0.0
+
+MountCountEnhanced.lua
