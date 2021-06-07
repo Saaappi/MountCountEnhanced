@@ -28,6 +28,16 @@ local function CheckForUseError(useError)
 			return true;
 		end
 	end
+	return false;
+end
+
+local function CheckForUnusableMount(name)
+	for _, mountName in ipairs(unusableMounts) do
+		if name == mountName then
+			return true;
+		end
+	end
+	return false;
 end
 
 local function GetPlayerFaction()
@@ -68,7 +78,7 @@ e:SetScript("OnEvent", function(self, event, addon)
 			if (isCollected and hideOnChar) then
 				numMountsUnusableOnAccount = numMountsUnusableOnAccount + 1;
 				table.insert(unusableMounts, name);
-			elseif (t.mounts[mountID] and t.mounts[mountID]["faction"] ~= GetPlayerFaction() and t.mounts[mountID]["name"] ~= name) then
+			elseif (t.mounts[mountID] and CheckForUnusableMount(t.mounts[mountID]["name"]) ~= true and t.mounts[mountID]["faction"] ~= GetPlayerFaction()) then
 				numMountsUnusableOnAccount = numMountsUnusableOnAccount + 1;
 				table.insert(unusableMounts, name);
 			end
