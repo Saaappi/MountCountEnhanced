@@ -12,6 +12,7 @@
 ]]--
 local addonName, t = ...;
 local e = CreateFrame("Frame");
+local unusableMounts = {};
 local useErrors = {
 	"To use this mount in the current area you must be underwater.",
 	"You can't use that here.",
@@ -64,8 +65,12 @@ e:SetScript("OnEvent", function(self, event, addon)
 			if (isCollected ~= true and hideOnChar ~= true) then
 				numMountsUncollectedOnAccount = numMountsUncollectedOnAccount + 1;
 			end
-			if ((isCollected and hideOnChar) or (t.mounts[mountID] and t.mounts[mountID]["faction"] ~= GetPlayerFaction())) then
+			if (isCollected and hideOnChar) then
 				numMountsUnusableOnAccount = numMountsUnusableOnAccount + 1;
+				table.insert(unusableMounts, name);
+			elseif (t.mounts[mountID] and t.mounts[mountID]["faction"] ~= GetPlayerFaction() and t.mounts[mountID]["name"] ~= name) then
+				numMountsUnusableOnAccount = numMountsUnusableOnAccount + 1;
+				table.insert(unusableMounts, name);
 			end
 		end
 		
