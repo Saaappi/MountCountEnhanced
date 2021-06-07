@@ -29,11 +29,20 @@ local function CheckForUseError(useError)
 	end
 end
 
+local function GetPlayerFaction()
+	local faction = UnitFactionGroup("player");
+	if faction == "Alliance" then
+		return 1;
+	else
+		return 0;
+	end
+end
+
 -- Logic
 e:SetScript("OnEvent", function(self, event, addon)
 	if event == "ADDON_LOADED" and addon == "Blizzard_Collections" then
 		-- Reconfigure the bar's layout and position.
-		MountJournal.MountCount:SetWidth(140);
+		MountJournal.MountCount:SetWidth(160);
 		MountJournal.MountCount:SetHeight(35);
 		MountJournal.MountCount:SetPoint("TOPLEFT", MountJournal, "TOPLEFT", 70, -25);
 		
@@ -41,6 +50,7 @@ e:SetScript("OnEvent", function(self, event, addon)
 		local numMountsCollectedOnAccount = 0; -- This includes all mounts collected on the account, regardless of faction.
 		local numMountsUncollectedOnAccount = 0; -- Self explanatory. Get to work!
 		local numMountsUsableOnAccount = 0; -- The number of mounts usable to the character.
+		local numMountsUnusableOnAccount = 0; -- The number of collected mounts not usuable to the current character.
 		local mountIDs = C_MountJournal.GetMountIDs();
 		for index, mountID in ipairs(mountIDs) do
 			local name, _, _, _, _, _, _, _, _, hideOnChar, isCollected = C_MountJournal.GetMountInfoByID(mountID);
@@ -54,9 +64,12 @@ e:SetScript("OnEvent", function(self, event, addon)
 			if (isCollected ~= true and hideOnChar ~= true) then
 				numMountsUncollectedOnAccount = numMountsUncollectedOnAccount + 1;
 			end
+			if ((isCollected and hideOnChar) or (t.mounts[mountID] and t.mounts[mountID]["faction"] ~= GetPlayerFaction())) then
+				numMountsUnusableOnAccount = numMountsUnusableOnAccount + 1;
+			end
 		end
 		
-		MountJournal.MountCount.Label:SetText("Collected: |cffFFFFFF" .. numMountsCollectedOnAccount .. "|r\n" ..
+		MountJournal.MountCount.Label:SetText("Collected: |cffFFFFFF" .. numMountsCollectedOnAccount .. "|r (|cffFFFFFF" .. (numMountsUsableOnAccount+numMountsUnusableOnAccount) .. "|r)\n" ..
 		"Uncollected: |cffFFFFFF" .. numMountsUncollectedOnAccount .. "|r\n" ..
 		"Usable: |cffFFFFFF" .. numMountsUsableOnAccount .. "|r");
 		MountJournal.MountCount.Count:Hide();
