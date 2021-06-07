@@ -17,7 +17,7 @@ local mounts = {
 	[1255] = {
 		["name"] = "Deepcoral Snapdragon",
 		["faction"] = 1,
-	}, -- [A] Horde variant isn't automatically learned.
+	},
 	[1256] = {
 		["name"] = "Snapdragon Kelpstalker",
 		["faction"] = 0,
