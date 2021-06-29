@@ -1,5 +1,5 @@
 ## Author: Sappy (Alex)
-## Interface: 90005
+## Interface: 90100
 ## Name: MountCountEnhanced
 ## Notes: Enhances mount count information in the mount journal.
 ## Title: MountCountEnhanced
